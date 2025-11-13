@@ -1,94 +1,108 @@
-# AutoRoy Scalable Chat 🚀
+# **AutoRoy Scalable Chat 🚀**
+![CI](https://github.com/autoroybiz-cpu/autoroy-chat-ui/actions/workflows/ci.yml/badge.svg)
 
-[🌐 Live UI](https://autoroy-chat-ui.onrender.com/)
-[🟢 Chat Service Health](https://autoroy-chat-service.onrender.com/)
-[🟢 Auth Service Health](https://autoroy-auth-service.onrender.com/)
+A full DevOps × Cloud × Microservices demonstration project.
 
-פרויקט דמו בתחום **DevOps / Cloud / Fullstack** שמדגים איך לבנות צ׳אט סקיילבילי בסגנון Slack/Discord, עם הפרדה בין Frontend ל-Microservices, דיפלוי ל-Render, והכנה ל־CI/CD.
+[🌐 **Live UI**](https://autoroy-chat-ui.onrender.com/)
+[🟢 **Chat Service Health**](https://autoroy-chat-service.onrender.com/)
+[🟢 **Auth Service Health**](https://autoroy-auth-service.onrender.com/)
 
----
-
-## 🧩 מה הפרויקט עושה?
-
-- מסך התחברות עם **אימות בסיסי** דרך שירות Auth נפרד.
-- בחירת שם תצוגה (Display Name) לפני כניסה לצ׳אט.
-- צ׳אט חי בזמן־אמת בעזרת **Socket.IO**.
-- תמיכה בשליחת **קישורי תמונות** (URL) והצגתן בתור בועה בצ׳אט.
-- הודעות מערכת בסגנון “מישהו הצטרף לצ׳אט”.
-- חלוקה לשירותים:
-- שירות Auth (כניסה).
-- שירות Chat (Socket.IO).
-- UI סטטי שמדבר עם שניהם.
+A hands-on demo project showcasing how to build a **scalable real-time chat system** (Slack/Discord-style) using a separated UI + microservices backend, deployed on Render with CI/CD-ready architecture.
 
 ---
 
-## 🏗 ארכיטקטורה
+## 🧩 **Project Overview**
+
+The system includes:
+
+- A **login screen** using a dedicated authentication microservice
+- **Display name selection** before entering the chat
+- **Real-time messaging** with Socket.IO
+- Support for **image messages** by sending any image URL
+- **System events**, e.g.: “A user has joined the chat”
+- Strict microservice separation:
+- **Auth Service** → handles login & token response
+- **Chat Service** → manages WebSocket (Socket.IO) communication
+- **Standalone UI** → communicates with both services
+
+The project demonstrates fundamentals of real DevOps architecture: separation of concerns, stateless services, health checks, scalable deployment, and troubleshooting.
+
+---
+
+## 🏗 **Architecture**
 
 ![Architecture](./architecture-diagram.png)
 
-**תרשים גבוה (High Level):**
+### **High-Level Flow**
 
-- **Client (UI)** – אתר סטטי שמתארח ב-Render, מדבר עם:
-- `autoroy-auth-service` עבור `/login`
-- `autoroy-chat-service` עבור WebSocket (Socket.IO)
-- **Auth Service** – שירות Node/Express קטן שנותן token דמה.
-- **Chat Service** – שירות Node/Socket.IO שמנהל את חדר הצ׳אט.
-- תקשורת HTTP + WebSocket מעל HTTPS (Render).
+- **Client (UI)**
+A static site hosted on Render
+- Calls `autoroy-auth-service` → `/login`
+- Connects to `autoroy-chat-service` → via Socket.IO (WebSocket)
+
+- **Auth Service**
+Lightweight Node.js/Express service returning a mock token
+
+- **Chat Service**
+Node.js + Socket.IO service running a real-time chat room
+
+- Communication is via **HTTPS + WebSocket** across independent Render services.
 
 ---
 
-## 🛠 טכנולוגיות
+## 🛠 **Technologies Used**
 
-**Frontend**
+### **Frontend**
+- HTML, CSS, vanilla JavaScript
+- Modern dark UI design with RTL support & animations
+- Socket.IO client
 
-- HTML, CSS, JavaScript (Vanilla)
-- עיצוב מודרני (Dark Mode), RTL, אנימציות קלות
-- Socket.IO Client
-
-**Backend**
-
-- Node.js + Express
+### **Backend**
+- Node.js
+- Express
 - Socket.IO
 - CORS
-- דיפלוי כשני שירותים נפרדים ב-Render
+- Deployed as two independent microservices on Render
 
-**DevOps / Cloud**
-
-- דיפלוי אוטומטי מ-GitHub ל-Render (Auto Deploy on push)
-- הפרדה בין UI ל-Backend
-- Health checks לכל שירות
+### **DevOps / Cloud**
+- Automatic deploys from GitHub → Render (Auto Deploy on push)
+- Strict separation of UI and backend services
+- Health checks for each service
+- Troubleshooting real deployment issues under production-like conditions
 
 ---
 
+## 🧭 **Roadmap & Future Improvements**
 
-💡 דברים לשיפור / Roadmap
-✅ עיצוב UI משודרג עם חתימת הרוקט של AutoRoy
+✅ Upgraded UI design with the **AutoRoy Rocket Signature**
 
-⬜ הוספת זיכרון לשיחה (Persistent storage – DB או Redis)
+⬜ Persistent message history (DB / Redis)
 
-⬜ תמיכה במספר חדרים (Rooms)
+⬜ Support for multiple chat rooms
 
-⬜ הוספת CI/CD אמיתי (GitHub Actions → Render)
+⬜ Full CI/CD pipeline (GitHub Actions → Render)
 
-⬜ בדיקות אוטומטיות (Unit / Integration)
+⬜ Automated testing (unit + integration)
 
+---
 
+## 👤 **About Me**
 
-👤 עליי
+This project was built as part of my journey into **DevOps, Cloud Engineering, and Production-grade architecture**.
 
+**Goal:**
+Create a practical, interview-ready portfolio project that demonstrates:
+- Microservice design
+- Real cloud deployments
+- Debugging & production troubleshooting
+- Understanding of scalable system architecture
 
-הפרויקט נבנה כחלק מתהליך כניסה לעולם DevOps / Cloud והכנת תיק עבודות לריאיונות.
+---
 
-המטרה: להראות הבנה בארכיטקטורה, שירותים נפרדים, דיפלוי בענן ו־troubleshooting של תקלות production
+## 🚀 **Run Locally**
 
-
-
-## 🚀 איך מריצים לוקלית
-
-### 1. קלאיינט (UI)
+### **1. Clone the UI**
 
 ```bash
 git clone https://github.com/autoroybiz-cpu/scalable-chat.git
 cd scalable-chat
-# פותחים index.html בדפדפן בצורה סטטית
-# (אפשר עם Live Server ב-VSCode, או פשוט פתיחה ידנית)
