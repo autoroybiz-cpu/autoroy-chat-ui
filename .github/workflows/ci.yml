@@ -3,8 +3,8 @@ name: CI
 on: push
 
 jobs:
-test:
-runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 steps:
-- name: Say hello
-run: echo "hello from CI"
+      - name: Say hello
+        run: echo "hello from CI"
