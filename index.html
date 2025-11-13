@@ -500,7 +500,7 @@ if (!username || !password) {
 alert('אנא מלא את כל השדות');
 return;
 }
-fetch('http://localhost:3000/login', {
+fetch('https://autoroy-auth-service.onrender.com/login', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify({ username, password })
@@ -526,7 +526,7 @@ return;
 usernameSelectScreen.classList.remove('active');
 chatScreen.classList.add('active');
 userNameSpan.textContent = displayName;
-socket = io('http://localhost:3001', { auth: { token: 'dummy-token-123' } });
+socket = io('https://autoroy-chat-service.onrender.com', { auth: { token: 'dummy-token-123' } });
 socket.on('connect', () => addMessage(displayName + ' הצטרף לצ\'אט!'));
 socket.on('message', (msg) => addMessage(msg));
 socket.on('connect_error', (err) => alert('שגיאת חיבור: ' + err.message));
