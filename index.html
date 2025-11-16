@@ -3,703 +3,352 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AutoRoy Chat</title>
+<title>AutoRoy Chat 🚀</title>
+
 <style>
+/* =============================================================
+AUTOROY CHAT — V4.6 MASTER MOBILE EDITION
+Ultra-polished, fully responsive, effects-rich, mobile-safe.
+============================================================= */
+
+/* COLOR SYSTEM */
 :root {
---primary: #00c853;
---primary-alt: #00b0ff;
---accent: #a855f7;
-
---bg-page: radial-gradient(circle at top, #1a2a6c 0, #050816 45%, #020617 100%);
---bg-chat-card: #0b1220;
---bg-chat-inner: #111827;
---bg-bubble-user: linear-gradient(135deg, #00c853, #00e5ff);
---bg-bubble-bot: #111827;
-
---text-main: #e5e7eb;
---text-muted: #9ca3af;
-
---border-soft: rgba(148, 163, 184, 0.45);
---border-strong: rgba(148, 163, 184, 0.7);
+--bg: #0f1117;
+--bg2: #181b27;
+--bg3: #202537;
+--primary: #00f5a0;
+--primary2: #00c0ff;
+--bubble-sent: linear-gradient(135deg, #00f5a0, #00c0ff);
+--bubble-received: #262c3f;
+--text: #e9edf5;
+--text2: #9ea5ba;
+--radius: 18px;
+--shadow: 0 0 35px rgba(0, 255, 180, 0.25);
 }
 
-* {
-box-sizing: border-box;
-margin: 0;
-padding: 0;
+/* LIGHT MODE */
+body.light-mode {
+--bg: #eff2f7;
+--bg2: #ffffff;
+--bg3: #f2f3f7;
+--bubble-received: #ffffff;
+--text: #1a1a1a;
+--text2: #6b7280;
+--shadow: 0 0 25px rgba(0, 200, 140, 0.25);
 }
 
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* BODY */
 body {
-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Rubik', sans-serif;
-background: var(--bg-page);
-color: var(--text-main);
 min-height: 100vh;
 display: flex;
 align-items: center;
 justify-content: center;
-padding: 24px 12px;
+padding: 22px;
+background: radial-gradient(circle at 30% 20%, #1d2030, #0f1117 70%);
+background-size: 200% 200%;
+animation: bgFlow 12s ease-in-out infinite;
+font-family: "Rubik", sans-serif;
+transition: 0.35s ease;
 }
 
-.page-wrapper {
+/* BACKGROUND ANIMATION */
+@keyframes bgFlow {
+0% { background-position: 30% 20%; }
+50% { background-position: 70% 80%; }
+100% { background-position: 30% 20%; }
+}
+
+/* CHAT WRAPPER */
+.chat-wrapper {
 width: 100%;
-max-width: 980px;
-}
-
-.chat-shell {
-background: var(--bg-chat-card);
-border-radius: 28px;
+max-width: 880px;
+background: var(--bg2);
+border-radius: var(--radius);
+border: 1px solid rgba(255,255,255,0.08);
+box-shadow: 0 25px 70px rgba(0,0,0,0.55),
+0 0 50px rgba(0,255,200,0.08);
 overflow: hidden;
-box-shadow:
-0 26px 70px rgba(15, 23, 42, 0.85),
-0 0 0 1px rgba(15, 23, 42, 0.8);
-border: 1px solid var(--border-strong);
+position: relative;
+transform: perspective(1200px) translateZ(0);
+transition: 0.4s ease;
 }
 
-header {
-background: linear-gradient(120deg, #00c853, #00b0ff);
-padding: 20px 24px;
-display: flex;
-align-items: center;
-gap: 12px;
-color: #fff;
+/* PARALLAX DESKTOP ONLY */
+@media (min-width: 769px) {
+.chat-wrapper:hover {
+transform: perspective(1200px) rotateX(2deg) rotateY(-2deg);
+}
 }
 
-header .logo-mark {
-width: 40px;
-height: 40px;
-border-radius: 12px;
-background: rgba(15, 23, 42, 0.18);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 1.5rem;
-}
-
-header .titles {
-display: flex;
-flex-direction: column;
-}
-
-header h1 {
-font-size: 1.6rem;
-font-weight: 800;
-letter-spacing: 0.08em;
-}
-
-header span {
-font-size: 0.78rem;
-letter-spacing: 0.16em;
-opacity: 0.95;
-text-transform: uppercase;
-}
-
-.content {
-display: grid;
-grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
-gap: 0;
-}
-
+/* DISABLE PARALLAX ON MOBILE */
 @media (max-width: 768px) {
-body {
-padding: 12px 6px;
+.chat-wrapper {
+transform: none !important;
+transition: none !important;
 }
-.chat-shell {
-border-radius: 18px;
-}
-.content {
-grid-template-columns: minmax(0, 1fr);
+.chat-wrapper:hover {
+transform: none !important;
 }
 }
 
-.hero-panel {
-padding: 22px 22px 18px;
-border-inline-end: 1px solid var(--border-soft);
-background: radial-gradient(circle at top, rgba(59,130,246,0.35), transparent 55%);
-}
-
-.hero-kicker {
-font-size: 0.8rem;
-color: var(--text-muted);
-letter-spacing: 0.18em;
-text-transform: uppercase;
-margin-bottom: 8px;
-}
-
-.hero-title {
-font-size: clamp(1.9rem, 2.6vw + 1rem, 2.4rem);
-line-height: 1.15;
+/* HEADER */
+header {
+background: linear-gradient(90deg, #00f5a0, #00c0ff);
+padding: 26px;
+text-align: center;
+color: white;
+font-size: 2rem;
 font-weight: 800;
-margin-bottom: 8px;
+letter-spacing: 0.05em;
 }
 
-.hero-title span {
-background: linear-gradient(120deg, #00e676, #00b0ff, #a855f7);
--webkit-background-clip: text;
-background-clip: text;
-color: transparent;
-}
-
-.hero-subtitle {
-font-size: 0.9rem;
-color: var(--text-muted);
-max-width: 22rem;
-}
-
-.hero-badges {
-margin-top: 14px;
-display: flex;
-flex-wrap: wrap;
-gap: 8px;
-}
-
-.hero-badge {
-font-size: 0.7rem;
-padding: 6px 10px;
-border-radius: 999px;
-border: 1px solid var(--border-soft);
-color: var(--text-muted);
-display: inline-flex;
-align-items: center;
-gap: 6px;
-background: rgba(15, 23, 42, 0.7);
-backdrop-filter: blur(6px);
-}
-
-.hero-badge-dot {
-width: 6px;
-height: 6px;
-border-radius: 999px;
-background: #22c55e;
-box-shadow: 0 0 0 4px rgba(34,197,94,0.35);
-}
-
-.login-card {
-margin-top: 18px;
-background: rgba(15,23,42,0.9);
-border-radius: 16px;
-padding: 16px 16px 14px;
-border: 1px solid var(--border-soft);
-}
-
-.login-title {
-font-size: 0.98rem;
-font-weight: 600;
-margin-bottom: 2px;
-}
-
-.login-caption {
-font-size: 0.78rem;
-color: var(--text-muted);
-margin-bottom: 12px;
-}
-
-label {
-display: block;
-font-size: 0.78rem;
-margin-top: 6px;
-margin-bottom: 3px;
-}
-
-input {
-width: 100%;
-padding: 9px 10px;
-border-radius: 10px;
-border: 1px solid var(--border-soft);
-background: rgba(15,23,42,0.95);
-color: var(--text-main);
-font-size: 0.86rem;
-transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
-}
-
-input::placeholder {
-color: #6b7280;
-}
-
-input:focus {
-outline: none;
-border-color: var(--primary);
-box-shadow:
-0 0 0 1px rgba(34,197,94,0.2),
-0 0 14px rgba(34,197,94,0.26);
-background: rgba(15,23,42,1);
-}
-
-.primary-btn {
-width: 100%;
-margin-top: 10px;
-border: none;
-border-radius: 999px;
-padding: 10px 12px;
-background: linear-gradient(120deg, #00c853, #00b0ff);
-color: #fff;
-font-size: 0.94rem;
-font-weight: 600;
-cursor: pointer;
-box-shadow: 0 16px 36px rgba(0,184,148,0.45);
-transition: transform 0.16s ease, box-shadow 0.16s ease;
-}
-
-.primary-btn:hover {
-transform: translateY(-1px) scale(1.01);
-box-shadow: 0 20px 46px rgba(0,184,148,0.6);
-}
-
-.primary-btn:active {
-transform: translateY(0) scale(0.99);
-box-shadow: 0 10px 22px rgba(0,184,148,0.45);
-}
-
-/* צ'אט */
-.chat-panel {
-padding: 20px 20px 18px;
-background: var(--bg-chat-inner);
-display: flex;
-flex-direction: column;
-gap: 10px;
-}
-
-.screen {
-display: none;
-}
-
+/* SCREENS */
+.screen { display: none; padding: 32px; }
 .screen.active {
 display: block;
-}
-
-.chat-header-row {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 6px;
-}
-
-.chat-user-label {
-font-size: 0.9rem;
-font-weight: 600;
-}
-
-.logout-btn {
-background: linear-gradient(120deg, #ef4444, #f97316);
-box-shadow: 0 12px 28px rgba(239,68,68,0.5);
-border-radius: 999px;
-border: none;
-color: #fff;
-font-size: 0.75rem;
-padding: 6px 10px;
-cursor: pointer;
-}
-
-.chat-window {
-background: #020617;
-border-radius: 18px;
-border: 1px solid var(--border-soft);
-padding: 12px 10px 10px;
-height: 360px;
-display: flex;
-flex-direction: column;
-overflow: hidden;
-}
-
-.messages {
-flex: 1;
-overflow-y: auto;
-display: flex;
-flex-direction: column;
-gap: 6px;
-padding-inline: 4px;
-scrollbar-width: thin;
-scrollbar-color: rgba(148,163,184,0.9) transparent;
-}
-
-.messages::-webkit-scrollbar {
-width: 6px;
-}
-
-.messages::-webkit-scrollbar-thumb {
-background: rgba(148,163,184,0.9);
-border-radius: 999px;
-}
-
-.bubble-row {
-display: flex;
-}
-
-.bubble-row.user {
-justify-content: flex-end;
-}
-
-.bubble-row.bot {
-justify-content: flex-start;
-}
-
-.bubble {
-max-width: 78%;
-padding: 8px 11px;
-border-radius: 14px;
-font-size: 0.86rem;
-line-height: 1.4;
-word-wrap: break-word;
-animation: fadeIn 0.25s ease-out;
-}
-
-.bubble.user {
-background: var(--bg-bubble-user);
-color: #f9fafb;
-border-bottom-right-radius: 4px;
-box-shadow: 0 10px 24px rgba(0,184,148,0.55);
-}
-
-.bubble.bot {
-background: var(--bg-bubble-bot);
-border: 1px solid var(--border-soft);
-color: var(--text-main);
-border-bottom-left-radius: 4px;
-}
-
-.bubble .sender-label {
-display: block;
-font-size: 0.7rem;
-opacity: 0.7;
-margin-bottom: 2px;
-}
-
-.typing-indicator {
-font-size: 0.78rem;
-color: var(--text-muted);
-padding-top: 2px;
-min-height: 16px;
-}
-
-.input-row {
-margin-top: 6px;
-display: flex;
-gap: 8px;
-}
-
-.input-row input {
-flex: 1;
-background: #020617;
-border-radius: 999px;
-}
-
-.input-row button {
-width: auto;
-min-width: 80px;
-padding-inline: 16px;
+animation: fadeIn 0.35s ease-out;
 }
 
 @keyframes fadeIn {
-from {
-opacity: 0;
-transform: translateY(4px);
+from { opacity: 0; transform: translateY(12px); }
+to { opacity: 1; transform: translateY(0); }
 }
-to {
-opacity: 1;
-transform: translateY(0);
+
+/* INPUT */
+input {
+width: 100%;
+padding: 14px;
+margin-top: 12px;
+border-radius: var(--radius);
+background: var(--bg3);
+border: 1px solid rgba(255,255,255,0.1);
+color: var(--text);
+transition: 0.25s;
 }
+input:focus {
+border-color: var(--primary);
+box-shadow: var(--shadow);
+outline: none;
 }
+
+/* BUTTON */
+button {
+width: 100%;
+padding: 14px;
+margin-top: 16px;
+border-radius: 999px;
+background: var(--bubble-sent);
+color: white;
+border: none;
+font-size: 1rem;
+font-weight: 700;
+cursor: pointer;
+transition: 0.2s;
+}
+button:hover { transform: scale(1.03); }
+button:active { transform: scale(0.96); }
+
+/* CHAT AREA */
+#messages {
+height: 420px;
+overflow-y: auto;
+padding: 22px;
+background: var(--bg3);
+border-radius: var(--radius);
+border: 1px solid rgba(255,255,255,0.05);
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+
+/* MESSAGES */
+.message {
+max-width: 75%;
+padding: 14px 18px;
+border-radius: var(--radius);
+font-size: 1rem;
+line-height: 1.5;
+animation: msgPop 0.25s ease-out;
+}
+
+@keyframes msgPop {
+from { opacity: 0; transform: translateY(8px) scale(0.96); }
+to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.message.sent {
+align-self: flex-end;
+background: var(--bubble-sent);
+color: white;
+box-shadow: var(--shadow);
+}
+.message.received {
+align-self: flex-start;
+background: var(--bubble-received);
+border: 1px solid rgba(255,255,255,0.07);
+}
+
+/* TYPING INDICATOR */
+#typing {
+color: var(--text2);
+font-size: 0.9rem;
+display: none;
+margin-top: -6px;
+animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+0%,100%{opacity:0.3}
+50%{opacity:1}
+}
+
+/* THEME BUTTON */
+.theme-toggle {
+position: fixed;
+top: 26px;
+left: 26px;
+width: 48px;
+height: 48px;
+border-radius: 50%;
+background: var(--bg2);
+border: 1px solid rgba(255,255,255,0.1);
+display:flex;
+align-items:center;
+justify-content:center;
+color: var(--text);
+font-size: 1.4rem;
+cursor:pointer;
+transition:0.25s;
+box-shadow:0 6px 20px rgba(0,0,0,0.45);
+}
+.theme-toggle:hover { transform: translateY(-3px); }
+
 </style>
 </head>
+
 <body>
-<div class="page-wrapper">
-<div class="chat-shell">
-<header>
-<div class="logo-mark">🚀</div>
-<div class="titles">
-<h1>AutoRoy Chat</h1>
-<span>DEVOPS DEMO • SCALABLE UI</span>
-</div>
-</header>
 
-<div class="content">
-<!-- HERO + LOGIN -->
-<section class="hero-panel">
-<div class="hero-kicker">AUTO-POWERED DEVOPS</div>
-<h2 class="hero-title">
-ברוך הבא אל <span>AutoRoy Chat</span>
-</h2>
-<p class="hero-subtitle">
-סביבת צ'אט שמדגימה איך אתה מחבר בין UI, לוגיקה של בוט ותשתית שמוכנה להתחברות
-לשירותים אמיתיים – כמו עובד DevOps שמרים מערכת קצה-לקצה.
-</p>
+<div class="theme-toggle" onclick="toggleTheme()">🌙</div>
 
-<div class="hero-badges">
-<div class="hero-badge">
-<span class="hero-badge-dot"></span>
-Realtime-ready Chat
-</div>
-<div class="hero-badge">🔐 Demo Auth Flow</div>
-<div class="hero-badge">🤖 AutoAgent Bot Logic</div>
+<div class="chat-wrapper">
+
+<header>AutoRoy Chat 🚀</header>
+
+<!-- LOGIN -->
+<div id="login" class="screen active">
+<h2>התחברות</h2>
+<input id="username" placeholder="שם משתמש" />
+<input id="password" type="password" placeholder="סיסמה" />
+<button onclick="login()">כניסה</button>
 </div>
 
-<div class="login-card screen active" id="login-screen">
-<div class="login-title">התחברות למערכת</div>
-<div class="login-caption">
-הכנס שם משתמש וסיסמה (דמו) כדי להמשיך לבחירת שם תצוגה וצ'אט חי עם AutoAgent.
+<!-- DISPLAY NAME -->
+<div id="username-select" class="screen">
+<h2>בחר שם תצוגה</h2>
+<input id="display-name" placeholder="לדוגמה: רוי" />
+<button onclick="setDisplayName()">אישור</button>
 </div>
-
-<label for="username">שם משתמש</label>
-<input id="username" type="text" autocomplete="username" placeholder="לדוגמה: roy" />
-
-<label for="password">סיסמה</label>
-<input id="password" type="password" autocomplete="current-password" placeholder="לדוגמה: 123" />
-
-<button class="primary-btn" id="login-btn">התחבר לצ'אט</button>
-</div>
-
-<div class="login-card screen" id="display-name-screen">
-<div class="login-title">בחר שם תצוגה</div>
-<div class="login-caption">
-השם שיופיע בתוך הצ'אט כשאתה כותב הודעות (למשל כשמגייס יבדוק את הדמו).
-</div>
-
-<label for="display-name">שם תצוגה</label>
-<input id="display-name" type="text" placeholder="לדוגמה: Roy" />
-
-<button class="primary-btn" id="display-name-btn">אשר והיכנס לצ'אט</button>
-</div>
-</section>
 
 <!-- CHAT -->
-<section class="chat-panel">
-<div class="screen" id="chat-screen">
-<div class="chat-header-row">
-<div class="chat-user-label">
-משתמש: <span id="chat-username-label">—</span>
-</div>
-<button class="logout-btn" id="logout-btn">התנתק</button>
+<div id="chat" class="screen">
+<div style="font-size:1.1rem; margin-bottom:10px;">
+שלום <span id="user-name" style="font-weight:700;"></span>
 </div>
 
-<div class="chat-window">
-<div class="messages" id="messages"></div>
-<div class="typing-indicator" id="typing-indicator"></div>
+<div id="messages"></div>
+<div id="typing">סוכן AutoRoy מקליד…</div>
+
+<input id="messageInput" placeholder="כתוב הודעה…" />
+<button onclick="sendMessage()">שליחה</button>
 </div>
 
-<div class="input-row">
-<input
-id="message-input"
-type="text"
-placeholder="כתוב הודעה (למשל: 'שלום', 'אני צריך אתר', 'כמה זה עולה')..."
-/>
-<button class="primary-btn" id="send-btn">שלח</button>
-</div>
-</div>
-
-<!-- הצ'אט לא פעיל עד שמתחברים -->
-<div class="screen active" id="chat-placeholder-screen">
-<div class="login-card">
-<div class="login-title">צ'אט דמו עם AutoAgent</div>
-<div class="login-caption">
-כדי לראות את הצ'אט בפעולה, התחבר בצד שמאל, בחר שם תצוגה – ותתחיל לכתוב ל-AutoAgent.
-הוא מגיב אחרת לברכות, לשאלות על אתר, ולשאלות על מחיר.
-</div>
-</div>
-</div>
-</section>
-</div>
-</div>
 </div>
 
 <script>
-// אלמנטים
-const loginScreen = document.getElementById('login-screen');
-const displayNameScreen = document.getElementById('display-name-screen');
-const chatScreen = document.getElementById('chat-screen');
-const chatPlaceholderScreen = document.getElementById('chat-placeholder-screen');
+let displayName;
+const screens = {
+login: document.getElementById("login"),
+user: document.getElementById("username-select"),
+chat: document.getElementById("chat")
+};
+const messages = document.getElementById("messages");
+const typing = document.getElementById("typing");
 
-const loginBtn = document.getElementById('login-btn');
-const displayNameBtn = document.getElementById('display-name-btn');
-const logoutBtn = document.getElementById('logout-btn');
-const sendBtn = document.getElementById('send-btn');
-
-const usernameInput = document.getElementById('username');
-const passwordInput = document.getElementById('password');
-const displayNameInput = document.getElementById('display-name');
-const messageInput = document.getElementById('message-input');
-
-const messagesEl = document.getElementById('messages');
-const typingIndicatorEl = document.getElementById('typing-indicator');
-const chatUsernameLabel = document.getElementById('chat-username-label');
-
-let currentDisplayName = '';
-let hasGreeted = false;
-
-const BOT_NAME = 'AutoAgent';
-
-const GREETING_KEYWORDS = [
-'hi', 'hey', 'hello',
-'שלום', 'שלומ', 'היי', 'הי',
-'מה קורה', 'מה נשמע', 'shalom', "what's up", 'whats up'
-];
-
-const WEBSITE_KEYWORDS = [
-'אתר', 'בנייה', 'בניית אתר', 'לבנות אתר', 'לשדרג אתר', 'landing',
-'website', 'web site', 'site', 'landing page'
-];
-
-const PRICE_KEYWORDS = [
-'מחיר', 'כמה זה עולה', 'כמה עולה', 'עלות', 'תקציב', 'הצעת מחיר',
-'price', 'pricing', 'cost', 'how much'
-];
-
-function showScreen(screen) {
-[loginScreen, displayNameScreen, chatScreen, chatPlaceholderScreen].forEach(s => {
-s.classList.remove('active');
-});
-if (screen) {
-screen.classList.add('active');
-}
+function login() {
+if (!username.value.trim() || !password.value.trim())
+return alert("מלא את כל השדות");
+screens.login.classList.remove("active");
+screens.user.classList.add("active");
 }
 
-// "התחברות" – בדמו מקבלים כל דבר לא ריק
-loginBtn.addEventListener('click', () => {
-const username = usernameInput.value.trim();
-const password = passwordInput.value.trim();
-if (!username || !password) {
-alert('אנא מלא שם משתמש וסיסמה (דמו)');
-return;
+function setDisplayName() {
+displayName = document.getElementById("display-name").value.trim();
+if (!displayName) return alert("בחר שם תצוגה");
+
+document.getElementById("user-name").textContent = displayName;
+
+screens.user.classList.remove("active");
+screens.chat.classList.add("active");
+
+bot("ברוך הבא " + displayName + "! איך אפשר לעזור?");
 }
-showScreen(displayNameScreen);
-displayNameInput.focus();
-});
 
-// בחירת שם תצוגה
-displayNameBtn.addEventListener('click', () => {
-const displayName = displayNameInput.value.trim();
-if (!displayName) {
-alert('אנא בחר שם תצוגה');
-return;
-}
-currentDisplayName = displayName;
-chatUsernameLabel.textContent = currentDisplayName;
-showScreen(chatScreen);
-hasGreeted = false;
-messagesEl.innerHTML = '';
-addBotMessage(
-'היי ' +
-currentDisplayName +
-' 👋 כאן ' + BOT_NAME +
-'. זה צ\'אט דמו – אתה יכול לשאול על אתר, מחיר, או סתם לכתוב שלום כדי לראות איך אני מגיב.'
-);
-messageInput.focus();
-});
-
-// התנתקות
-logoutBtn.addEventListener('click', () => {
-currentDisplayName = '';
-usernameInput.value = '';
-passwordInput.value = '';
-displayNameInput.value = '';
-messagesEl.innerHTML = '';
-typingIndicatorEl.textContent = '';
-showScreen(loginScreen);
-});
-
-// שליחת הודעה
-sendBtn.addEventListener('click', handleSend);
-messageInput.addEventListener('keypress', (e) => {
-if (e.key === 'Enter') {
-e.preventDefault();
-handleSend();
-}
-});
-
-function handleSend() {
+function sendMessage() {
 const text = messageInput.value.trim();
-if (!text || !currentDisplayName) return;
+if (!text) return;
 
-addUserMessage(text);
-messageInput.value = '';
-handleBotLogic(text);
+addMsg(displayName + ": " + text, "sent");
+messageInput.value = "";
+
+simulateReply(text);
 }
 
-function addUserMessage(text) {
-const row = document.createElement('div');
-row.className = 'bubble-row user';
-
-const bubble = document.createElement('div');
-bubble.className = 'bubble user';
-const label = document.createElement('span');
-label.className = 'sender-label';
-label.textContent = currentDisplayName;
-
-bubble.appendChild(label);
-bubble.appendChild(document.createTextNode(text));
-row.appendChild(bubble);
-
-messagesEl.appendChild(row);
-scrollMessagesToBottom();
+function addMsg(text, type) {
+const div = document.createElement("div");
+div.className = "message " + type;
+div.textContent = text;
+messages.appendChild(div);
+messages.scrollTop = messages.scrollHeight;
 }
 
-function addBotMessage(text) {
-const row = document.createElement('div');
-row.className = 'bubble-row bot';
-
-const bubble = document.createElement('div');
-bubble.className = 'bubble bot';
-const label = document.createElement('span');
-label.className = 'sender-label';
-label.textContent = BOT_NAME;
-
-bubble.appendChild(label);
-bubble.appendChild(document.createTextNode(text));
-row.appendChild(bubble);
-
-messagesEl.appendChild(row);
-scrollMessagesToBottom();
+function bot(text) {
+addMsg("סוכן AutoRoy: " + text, "received");
 }
 
-function scrollMessagesToBottom() {
-messagesEl.scrollTop = messagesEl.scrollHeight;
-}
+function simulateReply(text) {
+typing.style.display = "block";
 
-function handleBotLogic(userText) {
-const normalized = userText.toLowerCase();
-
-const isGreeting = GREETING_KEYWORDS.some(k => normalized.includes(k.toLowerCase()));
-const isWebsite = WEBSITE_KEYWORDS.some(k => normalized.includes(k.toLowerCase()));
-const isPrice = PRICE_KEYWORDS.some(k => normalized.includes(k.toLowerCase()));
-
+const t = text.toLowerCase();
 let reply;
 
-if (isGreeting && !hasGreeted) {
-reply =
-"Hi, Shalom, הגעת ל-AutoRoy 🤖 כאן " +
-BOT_NAME +
-". איך אפשר לעזור לך היום?";
-hasGreeted = true;
-} else if (isWebsite) {
-reply =
-'מעולה, נדבר על האתר שלך 🌐\n\n' +
-'אני יכול להרים עבורך אתר מסודר שממיר לידים: עמוד נחיתה, טפסים, חיבור ל-WhatsApp ולגוגל שיטס ' +
-'כדי שלא תפספס אף פנייה. נספר למגייסים שזה רק עניין של חיבור ל-backend אמיתי.';
-} else if (isPrice) {
-reply =
-'לגבי מחירים 💸\n\n' +
-'בדמו הזה אין תג מחיר “אמיתי”, אבל אפשר להציג למגייסים מודל פשוט: חבילת בסיס לעסקים קטנים, ' +
-'ריטיינר חודשי לאוטומציות, ואפשרות להתרחב לפי כמות השירותים והאינטגרציות.';
-} else {
-reply =
-'קיבלתי 👌\n\n' +
-'בדמו הזה אני לא מחובר עדיין ל-AI אמיתי, אבל המערכת כבר מוכנה: ברגע שמחברים מודל AI או ' +
-'שירות חיצוני, אפשר להפוך את ' + BOT_NAME +
-' לסוכן שעונה אוטומטית ללקוחות, מסווג לידים ושולח הכל ל-CRM.\n\n' +
-'If there is anything else you’d like to try here – just type it.\n' +
-'May the air be with you 💨🚀';
-}
-
-simulateBotTyping(reply);
-}
-
-function simulateBotTyping(text) {
-typingIndicatorEl.textContent = BOT_NAME + ' מקליד...';
-const typingDelay = Math.min(1200 + text.length * 15, 4000);
+if (t.includes("אתר"))
+reply = "נשמע שאתה רוצה לבנות אתר! אחלה כיוון 😉";
+else if (t.includes("מחיר"))
+reply = "מחיר תלוי היקף — אבל אצל AutoRoy הכל שקוף.";
+else if (t.includes("אוטומ"))
+reply = "אוטומציות זה התחום שלנו 💚 וואטסאפ, מיילים, זפייר!";
+else reply = "קיבלתי! רוצה להרחיב קצת יותר?";
 
 setTimeout(() => {
-typingIndicatorEl.textContent = '';
-addBotMessage(text);
-}, typingDelay);
+typing.style.display = "none";
+bot(reply);
+}, 900);
+}
+
+/* SEND WITH ENTER */
+document.getElementById("messageInput").addEventListener("keypress", (e) => {
+if (e.key === "Enter") sendMessage();
+});
+
+/* THEME TOGGLE */
+function toggleTheme() {
+document.body.classList.toggle("light-mode");
+document.querySelector(".theme-toggle").textContent =
+document.body.classList.contains("light-mode") ? "☀️" : "🌙";
 }
 </script>
+
 </body>
 </html>
