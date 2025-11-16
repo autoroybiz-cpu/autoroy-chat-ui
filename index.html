@@ -1,50 +1,48 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-UTF-8" />
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AutoRoy Cloud 🚀 Ultra Chat</title>
+<title>AutoRoy Chat 🚀 Ultra V4</title>
 
 <style>
-/* ============================================================
-AUTO-ROY CLOUD — ULTRA PREMIUM CHAT V3
-Design: Apple Vision Pro + Discord + Nike + Cyberpunk
-============================================================ */
+/* =============================================================
+AUTO-ROY CLOUD — ULTRA V4
+Design System: Apple Vision Pro + Discord + Cyberpunk + Nike
+============================================================= */
 
-/* -------------------- COLOR SYSTEM -------------------- */
+/* ---------------- COLOR SYSTEM ---------------- */
 :root {
---bg: #0e1018;
---bg2: #171a27;
---bg-chat: #1f2335;
+--bg: #0f101a;
+--bg2: #151824;
+--bg3: #1c2031;
 --primary: #00f5a0;
---secondary: #00b3ff;
---text: #e8ecf2;
---text2: #b3bad4;
---sent: linear-gradient(135deg, #00f5a0, #00b3ff);
---received: #262b40;
---radius: 20px;
+--primary2: #00c0ff;
+--bubble-sent: linear-gradient(135deg, #00f5a0, #00c0ff);
+--bubble-received: #242a3d;
+--text: #e9edf5;
+--text2: #9ea5ba;
+--radius: 18px;
 --border: rgba(255,255,255,0.07);
---glow: 0 0 25px rgba(0, 230, 140, 0.35);
---glow2: 0 0 25px rgba(0, 140, 255, 0.35);
+--shadow-glow: 0 0 25px rgba(0, 230, 140, 0.42);
+--shadow-glow2: 0 0 25px rgba(0, 140, 255, 0.45);
 }
 
-/* ---------- LIGHT MODE ---------- */
+/* LIGHT MODE */
 body.light-mode {
---bg: #f2f4f7;
+--bg: #eef1f6;
 --bg2: #ffffff;
---bg-chat: #eceef3;
+--bg3: #f4f5fa;
+--bubble-received: #ffffff;
 --text: #1a1a1a;
---text2: #666;
---received: white;
---border: rgba(0,0,0,0.08);
---glow: 0 0 15px rgba(0,200,140,0.25);
---glow2: 0 0 15px rgba(0,120,255,0.25);
+--text2: #6b7280;
+--border: rgba(0,0,0,0.1);
 }
 
-/* -------------------- RESET -------------------- */
+/* RESET */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* -------------------- BODY -------------------- */
+/* BODY */
 body {
 background: var(--bg);
 color: var(--text);
@@ -52,171 +50,194 @@ font-family: "Rubik", system-ui, sans-serif;
 min-height: 100vh;
 display: flex;
 align-items: center;
-justify-content: center;
+justify-content:center;
 padding: 28px;
 transition: 0.35s ease;
 }
 
-/* -------------------- CONTAINER -------------------- */
+/* WRAPPER */
 .chat-wrapper {
 width: 100%;
-max-width: 880px;
+max-width: 920px;
 background: var(--bg2);
 border-radius: var(--radius);
 overflow: hidden;
 border: 1px solid var(--border);
-box-shadow: 0 28px 80px rgba(0,0,0,0.55);
-animation: fadeIn 0.6s ease-out;
+box-shadow: 0 25px 80px rgba(0,0,0,0.55);
+position: relative;
 }
 
-/* -------------------- HEADER -------------------- */
+/* BACKGROUND GLOW EFFECTS */
+.chat-wrapper::before,
+.chat-wrapper::after {
+content: "";
+position: absolute;
+width: 300px;
+height: 300px;
+background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+opacity: 0.12;
+filter: blur(90px);
+animation: floaty 7s infinite ease-in-out;
+}
+.chat-wrapper::before { top: -100px; left: -120px; }
+.chat-wrapper::after { bottom: -100px; right: -140px; animation-delay: 2s; }
+
+@keyframes floaty {
+0% { transform: translateY(0); }
+50% { transform: translateY(40px); }
+100% { transform: translateY(0); }
+}
+
+/* HEADER */
 header {
-background: linear-gradient(90deg, #00f5a0, #00b3ff);
-padding: 22px;
+background: linear-gradient(90deg, #00f5a0, #00c0ff);
+padding: 26px;
+color: white;
 text-align: center;
-color: #fff;
 font-size: 2rem;
 font-weight: 800;
 letter-spacing: 0.06em;
 text-transform: uppercase;
-box-shadow: inset 0 -5px 30px rgba(255,255,255,0.3);
+position: relative;
+z-index: 5;
 }
-
 header span {
-display: block;
-font-size: 0.8rem;
-margin-top: 4px;
+font-size: 0.85rem;
+opacity: 0.9;
 }
 
-/* -------------------- SCREENS -------------------- */
+/* SCREENS */
 .screen { display: none; padding: 32px; }
-.screen.active { display: block; animation: fadeIn 0.4s ease-out; }
+.screen.active { display: block; animation: fade 0.45s ease-out; }
 
-/* -------------------- INPUTS -------------------- */
+@keyframes fade {
+from { opacity: 0; transform: translateY(12px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* INPUTS */
 input {
 width: 100%;
 padding: 14px;
 margin-top: 10px;
-background: var(--bg-chat);
 border-radius: var(--radius);
-border: 1px solid var(--border);
+background: var(--bg3);
 color: var(--text);
-transition: 0.2s;
+border: 1px solid var(--border);
+transition: 0.25s ease;
 }
 input:focus {
-outline: none;
 border-color: var(--primary);
-box-shadow: var(--glow);
+box-shadow: var(--shadow-glow);
+outline: none;
 }
 
-/* -------------------- BUTTONS -------------------- */
+/* BUTTONS */
 button {
 width: 100%;
 padding: 14px;
 margin-top: 14px;
-background: var(--sent);
-color: white;
 border: none;
 border-radius: 999px;
-font-size: 1rem;
+background: var(--bubble-sent);
+color: white;
+font-size: 1.05rem;
 font-weight: 700;
 cursor: pointer;
 transition: 0.2s;
 }
-button:hover { transform: scale(1.03); box-shadow: var(--glow2); }
+button:hover { transform: scale(1.03); box-shadow: var(--shadow-glow2); }
 button:active { transform: scale(0.97); }
 
-/* -------------------- MESSAGES -------------------- */
+/* MESSAGES */
 #messages {
 height: 420px;
 overflow-y: auto;
-background: var(--bg-chat);
+background: var(--bg3);
 padding: 22px;
 border-radius: var(--radius);
+border: 1px solid var(--border);
 display: flex;
 flex-direction: column;
 gap: 16px;
-border: 1px solid var(--border);
-box-shadow: inset 0 0 25px rgba(0,0,0,0.28);
+position: relative;
 }
-
 .message {
 max-width: 75%;
 padding: 14px 18px;
 border-radius: var(--radius);
-font-size: 1rem;
 line-height: 1.5;
-animation: popIn 0.25s ease-out;
+animation: pop 0.25s ease-out;
+font-size: 1.03rem;
 }
 .message.sent {
 align-self: flex-end;
-background: var(--sent);
+background: var(--bubble-sent);
 color: white;
-box-shadow: var(--glow);
+box-shadow: var(--shadow-glow);
 }
 .message.received {
 align-self: flex-start;
-background: var(--received);
+background: var(--bubble-received);
 border: 1px solid var(--border);
 }
 
-/* -------------------- THEME BUTTON -------------------- */
+/* BOT TYPING INDICATOR */
+#typing {
+display:none;
+color: var(--text2);
+font-size: 0.9rem;
+animation: blink 1s infinite;
+}
+@keyframes blink {
+0% { opacity: 0.3; }
+50% { opacity: 1; }
+100% { opacity: 0.3; }
+}
+
+/* THEME TOGGLE */
 .theme-toggle {
 position: fixed;
 top: 26px;
 left: 26px;
 width: 48px;
 height: 48px;
-background: var(--bg2);
-border: 1px solid var(--border);
 border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
+background: var(--bg2);
 color: var(--text);
+border: 1px solid var(--border);
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:0.3s;
 font-size: 1.4rem;
-cursor: pointer;
-transition: 0.25s;
-z-index: 99;
-box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+z-index: 999;
+box-shadow:0 6px 20px rgba(0,0,0,0.5);
 }
-.theme-toggle:hover {
-transform: translateY(-2px);
-}
+.theme-toggle:hover { transform:translateY(-2px); }
 
-/* -------------------- ANIMATIONS -------------------- */
-@keyframes fadeIn {
-from { opacity:0; transform: translateY(12px); }
-to { opacity:1; transform: translateY(0); }
-}
-@keyframes popIn {
-from { opacity:0; transform: scale(0.92); }
-to { opacity:1; transform: scale(1); }
-}
 </style>
 </head>
 
 <body>
 
+<!-- THEME BUTTON -->
 <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
 
 <div class="chat-wrapper">
 
 <header>
-AUTOROY CLOUD 🚀
-<span>ULTRA PREMIUM CHAT EXPERIENCE</span>
+AUTOROY CHAT 🚀
+<span>ULTRA PREMIUM INTERFACE</span>
 </header>
 
 <!-- LOGIN -->
 <div id="login" class="screen active">
 <h2>התחברות</h2>
-<p style="color:var(--text2); margin-bottom:14px;">
-הזן שם משתמש וסיסמה (דמו בלבד).
-</p>
-
-<input id="username" placeholder="לדוגמה: roy" />
-<input id="password" type="password" placeholder="123" />
-
+<p style="color:var(--text2); margin-bottom:14px;">דמו בלבד.</p>
+<input id="username" placeholder="שם משתמש" />
+<input id="password" type="password" placeholder="סיסמה" />
 <button onclick="login()">כניסה</button>
 </div>
 
@@ -229,11 +250,12 @@ AUTOROY CLOUD 🚀
 
 <!-- CHAT -->
 <div id="chat" class="screen">
-<div style="font-weight:700; margin-bottom:14px;">
-שלום <span id="user-name"></span> ✨
+<div style="font-size:1.1rem; margin-bottom:14px;">
+שלום <span id="user-name" style="font-weight:600;"></span> ✨
 </div>
 
 <div id="messages"></div>
+<div id="typing">סוכן AutoRoy מקליד...</div>
 
 <input id="messageInput" placeholder="כתוב הודעה..." />
 <button onclick="sendMessage()">שליחה</button>
@@ -242,6 +264,10 @@ AUTOROY CLOUD 🚀
 </div>
 
 <script>
+/* =========================================================
+ULTRA V4 CHAT LOGIC
+========================================================= */
+
 let displayName;
 const screens = {
 login: document.getElementById("login"),
@@ -249,12 +275,11 @@ user: document.getElementById("username-select"),
 chat: document.getElementById("chat")
 };
 const messages = document.getElementById("messages");
+const typing = document.getElementById("typing");
 
 function login() {
-const u = username.value.trim();
-const p = password.value.trim();
-if (!u || !p) return alert("מלא את כל השדות");
-
+if (!username.value.trim() || !password.value.trim())
+return alert("מלא את כל השדות");
 screens.login.classList.remove("active");
 screens.user.classList.add("active");
 }
@@ -272,21 +297,20 @@ bot("ברוך הבא " + displayName + "! איך אפשר לעזור?");
 }
 
 function sendMessage() {
-const input = document.getElementById("messageInput");
-const text = input.value.trim();
+const text = messageInput.value.trim();
 if (!text) return;
 
 addMsg(displayName + ": " + text, "sent");
-input.value = "";
+messageInput.value = "";
 
 simulateReply(text);
 }
 
 function addMsg(text, type) {
-const msg = document.createElement("div");
-msg.className = "message " + type;
-msg.textContent = text;
-messages.appendChild(msg);
+const div = document.createElement("div");
+div.className = "message " + type;
+div.textContent = text;
+messages.appendChild(div);
 messages.scrollTop = messages.scrollHeight;
 }
 
@@ -294,18 +318,24 @@ function bot(text) {
 addMsg("סוכן AutoRoy: " + text, "received");
 }
 
-function simulateReply(txt) {
-const t = txt.toLowerCase();
-let r;
+function simulateReply(text) {
+typing.style.display = "block";
 
-if (t.includes("אתר")) r = "נשמע שאתה בעניין של בניית אתר! אפשר לעשות את זה בסטייל AutoRoy 😎";
-else if (t.includes("מחיר")) r = "מחיר? תלוי היקף — אבל בדמו הזה הכל חינם 😉";
-else if (t.includes("אוטומ")) r = "אוטומציות זה בדם שלנו 💚 וואטסאפ, מיילים, לידים — הכל!";
-else r = "קיבלתי! רוצה לפרט קצת יותר?";
+const t = text.toLowerCase();
+let reply;
 
-setTimeout(()=> bot(r), 700);
+if (t.includes("אתר")) reply = "נשמע שאתה צריך בניית אתר! בדמו הזה אני מדגים רק UI — אבל נראה שאתה בדרך הנכונה 😉";
+else if (t.includes("מחיר")) reply = "מחירים? תלוי פרויקט — אבל אצל AutoRoy הכל שקוף וברור.";
+else if (t.includes("אוטומ")) reply = "אוטומציות זה השטח שלי 💚 וואטסאפ, טפסים, זפייר — הכול!";
+else reply = "קיבלתי! אם תרצה להרחיב — אני כאן.";
+
+setTimeout(() => {
+typing.style.display = "none";
+bot(reply);
+}, 1200);
 }
 
+/* THEME TOGGLE */
 function toggleTheme() {
 document.body.classList.toggle("light-mode");
 document.querySelector(".theme-toggle").textContent =
@@ -315,4 +345,3 @@ document.body.classList.contains("light-mode") ? "☀️" : "🌙";
 
 </body>
 </html>
-
