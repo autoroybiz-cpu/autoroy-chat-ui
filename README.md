@@ -1,4 +1,4 @@
-# **AutoRoy Scalable Chat 🚀**
+# **AutoRoy Chat 🚀**
 ![CI](https://github.com/autoroybiz-cpu/autoroy-chat-ui/actions/workflows/ci.yml/badge.svg)
 
 A full DevOps × Cloud × Microservices demonstration project.
@@ -80,7 +80,7 @@ Node.js + Socket.IO service running a real-time chat room
 
 ⬜ Support for multiple chat rooms
 
-⬜ Full CI/CD pipeline (GitHub Actions → Render)
+✅ Full CI/CD pipeline (GitHub Actions → Render)
 
 ⬜ Automated testing (unit + integration)
 
