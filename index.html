@@ -425,26 +425,25 @@ AUTOROY CLOUD
 ברוך הבא אל <span>AutoRoy Chat</span>
 </h1>
 <p class="hero-subtitle">
-סביבת צ'אט סקיילבילית שתוכננה כדי להדגים שאתה יודע להזניק שירותים, לחבר ביניהם
-ולתפעל מערכת אמיתית – כמו עובד DevOps.
+סביבת צ'אט סקיילבילית שמדגימה יכולת לבנות UI מודרני, לנהל מצבי משתמש ולייצר סימולציית צ'אט מלאה – כמו במערכת אמיתית.
 </p>
 <div class="hero-badges">
 <div class="hero-badge">
 <span class="hero-badge-dot"></span>
-Realtime Socket.IO
+Realtime-style Chat
 </div>
 <div class="hero-badge">
-🔐 Auth Service on 3000
+👤 Login + Display Name
 </div>
 <div class="hero-badge">
-💬 Chat Service on 3001
+🤖 Simulated Support Agent
 </div>
 </div>
 </div>
 
 <div class="login-box">
 <div class="login-title">התחברות למערכת</div>
-<div class="login-caption">הכנס שם משתמש וסיסמה כדי להמשיך לבחירת שם תצוגה וצ'אט חי.</div>
+<div class="login-caption">הכנס שם משתמש וסיסמה (דמו בלבד) כדי להמשיך לבחירת שם תצוגה וצ'אט חי.</div>
 
 <label for="username">שם משתמש</label>
 <input type="text" id="username" placeholder="שם משתמש (לדוגמה: roy)" />
@@ -482,9 +481,7 @@ Realtime Socket.IO
 </div>
 </div>
 
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script>
-let socket;
 let displayName;
 const loginScreen = document.getElementById('login');
 const usernameSelectScreen = document.getElementById('username-select');
@@ -493,28 +490,24 @@ const messages = document.getElementById('messages');
 const profileImg = document.getElementById('profile-img');
 const userNameSpan = document.getElementById('user-name');
 
+// התחברות דמו – אין שרת, רק בדיקה שיש ערכים
 function login() {
 const username = document.getElementById('username').value.trim();
 const password = document.getElementById('password').value;
+
 if (!username || !password) {
 alert('אנא מלא את כל השדות');
 return;
 }
-fetch('https://autoroy-auth-service.onrender.com/login', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ username, password })
-})
-.then(res => res.json())
-.then(data => {
-if (data.token) {
+
+// בדמו אפשר גם להראות "בדיקת משתמש קבועה"
+if (username !== 'roy' || password !== '123') {
+const ok = confirm('בדמו אפשר להתחבר גם עם roy / 123. להמשיך בכל זאת?');
+if (!ok) return;
+}
+
 loginScreen.classList.remove('active');
 usernameSelectScreen.classList.add('active');
-} else {
-alert(data.error || 'התחברות נכשלה');
-}
-})
-.catch(err => alert('שגיאה: ' + err.message));
 }
 
 function setDisplayName() {
@@ -523,44 +516,49 @@ if (!displayName) {
 alert('אנא בחר שם תצוגה');
 return;
 }
+
 usernameSelectScreen.classList.remove('active');
 chatScreen.classList.add('active');
 userNameSpan.textContent = displayName;
-socket = io('https://autoroy-chat-service.onrender.com', { auth: { token: 'dummy-token-123' } });
-socket.on('connect', () => addMessage(displayName + ' הצטרף לצ\'אט!'));
-socket.on('message', (msg) => addMessage(msg));
-socket.on('connect_error', (err) => alert('שגיאת חיבור: ' + err.message));
+
+// הודעת פתיחה מה"סוכן"
+addMessage(
+'סוכן AutoRoy: היי ' + displayName +
+', ברוך הבא לדמו הצ\'אט. תכתוב לי משפט כאילו אתה לקוח (למשל: "אני מחפש בנייה של אתר לעסק") ותראה תשובת דמה אוטומטית.',
+'received'
+);
 }
 
 function sendMessage() {
 const input = document.getElementById('messageInput');
 const message = input.value.trim();
-if (socket && message && displayName) {
+if (!message || !displayName) return;
+
+// הודעת המשתמש
 if (message.startsWith('http') && (message.endsWith('.jpg') || message.endsWith('.png'))) {
-const fullMessage = displayName + ' שלח תמונה: ';
-socket.emit('message', fullMessage);
-addMessageWithImage(fullMessage, message);
+addMessageWithImage(displayName + ' שלח תמונה:', message);
 } else {
-const fullMessage = displayName + ': ' + message;
-socket.emit('message', fullMessage);
-// מחכה לתשובה מהשרת
-}
-input.value = '';
-}
+addMessage(displayName + ': ' + message, 'sent');
+simulateBotReply(message);
 }
 
-function addMessage(msg) {
+input.value = '';
+}
+
+// הודעת טקסט רגילה
+function addMessage(text, type) {
 const div = document.createElement('div');
-div.className = msg.includes(displayName) ? 'message sent' : 'message received';
-div.innerHTML = msg;
+div.className = 'message ' + (type === 'sent' ? 'sent' : 'received');
+div.textContent = text;
 messages.appendChild(div);
 scrollToBottom();
 }
 
-function addMessageWithImage(msg, imgUrl) {
+// הודעה עם תמונה
+function addMessageWithImage(text, imgUrl) {
 const div = document.createElement('div');
-div.className = 'message.received';
-div.innerHTML = msg + ' <img src="' + imgUrl + '" alt="תמונה" onclick="openImage(\'' + imgUrl + '\')">';
+div.className = 'message received';
+div.innerHTML = text + ' <img src="' + imgUrl + '" alt="תמונה" onclick="openImage(\'' + imgUrl + '\')">';
 messages.appendChild(div);
 scrollToBottom();
 }
@@ -573,8 +571,29 @@ function openImage(url) {
 window.open(url, '_blank');
 }
 
+// סימולציית "סוכן תמיכה" – לוגיקה דמה בצד לקוח בלבד
+function simulateBotReply(userText) {
+const txt = userText.toLowerCase();
+let reply;
+
+if (txt.includes('אתר')) {
+reply = 'קיבלתי 😊 אז אתה מחפש בנייה או שדרוג של אתר. בדמו הזה אני מראה צ\'אט שעובד ויכול לשמש בסיס לאתר מלא.';
+} else if (txt.includes('וואטסאפ') || txt.includes('אוטומ')) {
+reply = 'נשמע שאתה רוצה אוטומציות ו-WhatsApp Business – בדיוק מסוג הדברים שהייתי מחבר למערכת כזו בפרודקשן.';
+} else if (txt.includes('מחיר') || txt.includes('כמה')) {
+reply = 'מבחינת מחיר – זה תלוי בהיקף המערכת. כאן זה רק דמו טכני שמדגים יכולות DevOps ו-Frontend.';
+} else if (txt.includes('צ\'אט') || txt.includes('chat') || txt.includes('slack')) {
+reply = 'המערכת הזו מדגימה צ\'אט בסגנון Slack/Discord, עם ניהול משתמשים, הודעות ויכולת להרחבה למיקרו־שירותים.';
+} else {
+reply = 'אני איתך 🙌 קיבלתי את ההודעה שלך ומעביר אותה להמשך טיפול. בינתיים אפשר להמשיך לשוחח כאן בדמו.';
+}
+
+setTimeout(() => {
+addMessage('סוכן AutoRoy: ' + reply, 'received');
+}, 700);
+}
+
 function logout() {
-if (socket) socket.disconnect();
 loginScreen.classList.add('active');
 usernameSelectScreen.classList.remove('active');
 chatScreen.classList.remove('active');
@@ -582,6 +601,7 @@ document.getElementById('username').value = '';
 document.getElementById('password').value = '';
 document.getElementById('display-name').value = '';
 messages.innerHTML = '';
+displayName = undefined;
 }
 
 document.getElementById('messageInput').addEventListener('keypress', (e) => {
@@ -596,3 +616,4 @@ toggleBtn.textContent = document.body.classList.contains('light-mode') ? '☀️
 </script>
 </body>
 </html>
+
