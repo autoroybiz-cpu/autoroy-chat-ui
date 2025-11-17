@@ -283,14 +283,12 @@ font-size: 1rem;
 margin-bottom: 10px;
 }
 
-/* מסך בחירת שם */
 #username-select .hint {
 font-size: 0.78rem;
 color: var(--text-muted);
 margin-bottom: 8px;
 }
 
-/* צ'אט */
 .chat-header-row {
 display: flex;
 align-items: center;
@@ -543,8 +541,8 @@ color: #0b1120;
 </h1>
 <p class="hero-subtitle">
 סביבת צ'אט שמדגימה מערכת סקיילבילית עם מסך התחברות,
-בחירת שם תצוגה וסוכן אוטומטי (AutoAgent) שמקל על בעלי עסקים
-להבין מה אפשר לעשות עם אוטומציות ו-Chat.
+בחירת שם תצוגה וסוכן אוטומטי (AutoAgent) שיכול לענות על שאלות
+לגבי אתרים, מחירים ואוטומציות.
 </p>
 
 <div class="hero-badges">
@@ -570,7 +568,7 @@ Realtime-style Chat Flow
 <input type="text" id="username" placeholder="לדוגמה: roy" />
 
 <label for="password">סיסמה</label>
-<input type="password" id="password" placeholder="אפשר כל ערך לדמו" />
+<input type="password" id="password" placeholder="לדוגמה: 123" />
 
 <button class="primary-btn" id="loginBtn">התחבר לצ'אט</button>
 </div>
@@ -582,7 +580,7 @@ Realtime-style Chat Flow
 <div id="username-select" class="screen active">
 <h2>בחירת שם תצוגה</h2>
 <p class="hint">
-זהו השם שייראה בתוך הצ'אט כאשר אתה שולח הודעה (לדוגמה: "Roy").
+זהו השם שיופיע בתוך הצ'אט כאשר אתה שולח הודעה (לדוגמה: "Roy").
 </p>
 <label for="displayName">שם תצוגה</label>
 <input type="text" id="displayName" placeholder="שם שיוצג בצ׳אט" />
@@ -605,7 +603,7 @@ Realtime-style Chat Flow
 <input
 type="text"
 id="messageInput"
-placeholder="כתוב הודעה... (לדוגמה: היי / אני צריך אתר / מה המחיר)"
+placeholder="כתוב הודעה... (למשל: היי / אני צריך אתר / כמה זה עולה)"
 autocomplete="off"
 />
 <button class="primary-btn" id="sendBtn">שלח</button>
@@ -632,6 +630,7 @@ const themeToggle = document.getElementById('themeToggle');
 
 let displayName = '';
 const BOT_NAME = 'AutoAgent';
+let loggedIn = false;
 
 // כפתור תאורה – מצב יום/לילה
 themeToggle.addEventListener('click', () => {
@@ -639,23 +638,35 @@ document.body.classList.toggle('light-mode');
 themeToggle.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
 });
 
-// "התחברות" – בדמו אנחנו רק בודקים שמולאו שדות
+// התחברות – חובה לפני כניסה לצ'אט
 loginBtn.addEventListener('click', () => {
 const username = document.getElementById('username').value.trim();
 const password = document.getElementById('password').value.trim();
 
 if (!username || !password) {
-alert('אנא מלא שם משתמש וסיסמה לדמו.');
+alert('אנא מלא שם משתמש וסיסמה.');
 return;
 }
 
-// בדמו – אין בקשת שרת אמיתית. אפשר לחבר ל-API בעתיד מכאן.
-// עוברים ישר למסך בחירת השם (הוא כבר מוצג כברירת מחדל).
-alert('התחברות דמו בוצעה בהצלחה 👌 עכשיו בחר שם תצוגה בצד ימין.');
+const correctUser = 'roy';
+const correctPass = '123';
+
+if (username === correctUser && password === correctPass) {
+loggedIn = true;
+alert('התחברות הצליחה. עכשיו אפשר לבחור שם תצוגה ולהיכנס לצ\'אט.');
+} else {
+loggedIn = false;
+alert('שם משתמש או סיסמה שגויים בדמו הזה.');
+}
 });
 
 // בחירת שם תצוגה
 displayBtn.addEventListener('click', () => {
+if (!loggedIn) {
+alert('קודם יש להתחבר בצד שמאל עם שם משתמש וסיסמה.');
+return;
+}
+
 const name = document.getElementById('displayName').value.trim();
 if (!name) {
 alert('אנא הזן שם תצוגה לצ\'אט.');
@@ -667,8 +678,10 @@ chatUserLabel.textContent = 'מחובר כ־ ' + displayName;
 usernameSelectScreen.classList.remove('active');
 chatScreen.classList.add('active');
 
-// ברכת פתיחה מהבוט
-addBotMessage(`ברוך הבא ${displayName}! זהו צ'אט הדמו של AutoRoy, עם סוכן אוטומטי בשם AutoAgent. איך תרצה להתחיל – אתר, מחיר או שאלה כללית?`);
+addBotMessage(
+`ברוך הבא ${displayName}! זהו צ'אט הדמו של AutoRoy, עם סוכן אוטומטי בשם AutoAgent. ` +
+`אפשר לשאול על אתר, מחיר או כל שאלה כללית.`
+);
 });
 
 // שליחת הודעה
@@ -704,44 +717,44 @@ addBotMessage(reply);
 }
 }
 
-// פונקציית NLU פשוטה לדמו
+// לוגיקה פשוטה לבוט (ברכות / אתר / מחיר / כללי)
 function getBotReply(text) {
 const lower = text.toLowerCase();
 
 const isGreeting =
 /(^|\s)(hi|hey|hello)(\s|$)/i.test(text) ||
-/(שלום|היי|הי|מה נשמע|מה קורה)/.test(text);
+/(שלום|שלומ|היי|הי|מה נשמע|מה קורה|shalom)/i.test(text);
 
 const mentionsWebsite =
 /(אתר|דף נחיתה|לנדינג|site|website|וורדפרס|shopify|חנות אונליין)/i.test(text);
 
 const mentionsPrice =
-/(מחיר|עלות|כמה עולה|כמה זה עולה|תמחור|pricing|price)/i.test(text);
+/(מחיר|עלות|כמה עולה|כמה זה עולה|תמחור|pricing|price|cost)/i.test(text);
 
 if (isGreeting && !mentionsWebsite && !mentionsPrice) {
-return `שלום ${displayName || ''}! הגעת ל-AutoRoy Chat. אני AutoAgent – סוכן אוטומטי. איך אפשר לעזור היום?`;
+return `שלום ${displayName || ''}! הגעת ל-AutoRoy Chat. אני ${BOT_NAME} – סוכן אוטומטי. איך אפשר לעזור היום?`;
 }
 
 if (mentionsWebsite) {
 return [
 `נשמע שאתה מתעניין באתר או בדף נחיתה 🌐`,
-`בדרך כלל אני בונה לעסקים אתר או דף שמחוברים לטופס לידים, לגוגל שיטס ולאוטומציות ב-WhatsApp/מייל.`,
-`אם תספר איזה סוג עסק ומה המטרה (למשל: לידים, מכירה, תדמית), אוכל להציע מבנה שמתאים בדיוק אליך.`,
-`ואם יש שאלות נוספות על אתר, תוכן או אוטומציות – פשוט תכתוב 🙂`
+`אפשר להקים אתר שמחובר לטפסים, לאוטומציות ולערוצים כמו WhatsApp או מייל,`,
+`כדי שכל פנייה תישמר במקום מסודר ותוכל לקבל מענה אוטומטי או ידני.`,
+`אם תכתוב קצת על סוג העסק והמטרה (לידים, מכירה, תדמית) יהיה קל לדמיין את המבנה הנכון.`
 ].join('\n');
 }
 
 if (mentionsPrice) {
 return [
-`שאלת מחיר היא תמיד מעולה 💸`,
-`העלות הסופית תלויה בהיקף: כמה עמודים צריך, האם יש אוטומציות מתקדמות, והאם צריך גם כתיבת טקסטים ועיצוב מלא.`,
-`בד״כ מתחילים מחבילה בסיסית וניתן להרחיב לפי הצורך, כך שהעסק לא משלם על דברים שהוא לא צריך.`,
-`אם תכתוב מה חשוב לך (תקציב משוער, לוחות זמנים ומה חייב להיות באתר) אפשר לקבל תמונה הרבה יותר מדויקת.`
+`שאלת המחיר חשובה 💸`,
+`העלות תלויה בהיקף: כמה עמודים, כמה אוטומציות, והאם יש צורך גם בעיצוב מלא ותוכן.`,
+`אפשר להתחיל מחבילה בסיסית ולהרחיב לפי הצורך, כך שההשקעה תתאים בדיוק לעסק.`,
+`אם יש לך טווח תקציב או ציפייה מסוימת – אפשר לכוון את הפתרון בהתאם.`
 ].join('\n');
 }
 
 // תשובת ברירת מחדל
-return `קיבלתי, תודה 🙌 אם תרצה לפרט על אתר, מחיר, או אוטומציה מסוימת – אני כאן כדי לעשות סדר.`;
+return `קיבלתי, תודה 🙌 אם תרצה לפרט על אתר, מחיר או אוטומציה מסוימת – אני כאן כדי לעשות סדר.`;
 }
 
 // יצירת בועות
@@ -765,7 +778,6 @@ label.className = 'sender-label';
 label.textContent = sender === 'user' ? (displayName || 'אתה') : BOT_NAME;
 
 const content = document.createElement('div');
-// תמיכה בשורות חדשות
 const safeText = text.replace(/\n/g, '<br>');
 content.innerHTML = safeText;
 
@@ -774,7 +786,6 @@ bubble.appendChild(content);
 row.appendChild(bubble);
 messagesEl.appendChild(row);
 
-// גלילה לתחתית
 messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
@@ -789,10 +800,13 @@ typingIndicator.textContent = '';
 // יציאה
 logoutBtn.addEventListener('click', () => {
 displayName = '';
+loggedIn = false;
 chatUserLabel.textContent = '';
 messagesEl.innerHTML = '';
 typingIndicator.textContent = '';
 document.getElementById('displayName').value = '';
+document.getElementById('username').value = '';
+document.getElementById('password').value = '';
 
 chatScreen.classList.remove('active');
 usernameSelectScreen.classList.add('active');
